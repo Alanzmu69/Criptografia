@@ -29,7 +29,7 @@ public class Criptografia {
         System.out.println("---------------");
         if(menu==1){
             System.out.print("""
-                             Ingrese el texto
+                             Ingrese el texto a cifrar
                              -> """);
             texto = sc.next();
             keyword=crearLlave(texto);
