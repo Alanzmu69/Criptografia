@@ -27,20 +27,23 @@ public class Criptografia {
                          -> """);
         menu=sc.nextInt();
         System.out.println("---------------");
-        if(menu==1){
-            System.out.print("""
-                             Ingrese el texto a cifrar
-                             -> """);
-            texto = sc.next();
-            keyword=crearLlave(texto);
-            palabraChida=encriptarOtp(texto.toUpperCase(),keyword.toUpperCase());
-            System.out.println("Mensaje encriptado: "+palabraChida);
-            palabraChida=decriptarOtp(palabraChida.toUpperCase(),keyword.toUpperCase()).toUpperCase();
-            System.out.println("Mensaje decriptado: "+palabraChida);
-        }else if(menu==2){
-            encriptarPlayFair();
-        }else if(menu==3){
-            encriptarHill();
+        switch (menu) {
+            case 1 -> {
+                System.out.print("""
+                                                 Ingrese el texto a cifrar
+                                                 -> """);
+                texto = sc.next();
+                keyword=crearLlave(texto);
+                palabraChida=encriptarOtp(texto.toUpperCase(),keyword.toUpperCase());
+                System.out.println("Mensaje encriptado: "+palabraChida);
+                palabraChida=decriptarOtp(palabraChida.toUpperCase(),keyword.toUpperCase()).toUpperCase();
+                System.out.println("Mensaje decriptado: "+palabraChida);
+            }
+            case 2 -> encriptarPlayFair();
+            case 3 -> encriptarHill();
+            default -> {
+                System.out.println("Opción Incorrecta.");
+            }
         }
     }
     
