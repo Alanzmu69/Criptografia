@@ -35,9 +35,9 @@ public class Criptografia {
                 texto = sc.next();
                 keyword = crearLlave(texto);
                 palabraChida = encriptarOtp(texto.toUpperCase(), keyword.toUpperCase());
-                System.out.println("Mensaje encriptado: " + palabraChida);
+                System.out.println("Mensaje Encriptado: " + palabraChida);
                 palabraChida = decriptarOtp(palabraChida.toUpperCase(), keyword.toUpperCase()).toUpperCase();
-                System.out.println("Mensaje decriptado: " + palabraChida);
+                System.out.println("Mensaje Decriptado: " + palabraChida);
             }
             case 2 ->
                 encriptarPlayFair();
