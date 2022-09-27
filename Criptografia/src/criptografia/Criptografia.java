@@ -39,10 +39,59 @@ public class Criptografia {
                 palabraChida = decriptarOtp(palabraChida.toUpperCase(), keyword.toUpperCase()).toUpperCase();
                 System.out.println("Mensaje Decriptado: " + palabraChida);
             }
-            case 2 ->
-                encriptarPlayFair();
+            case 2 -> {
+                System.out.println("\nCifrado Playfair\n");
+                
+                int decision;
+                System.out.print("""
+                         ---------------
+                         1. Encriptar
+                         2. Desencriptar
+                         ->  """);
+                decision = sc.nextInt();
+
+                switch(decision) {
+
+                    case 1 -> {
+
+                        System.out.print("Ingrese texto a encriptar: ");
+                        Scanner sc = new Scanner(System.in);
+                        texto = sc.nextLine();
+                        texto = texto.toUpperCase();
+                
+                        System.out.print("Ingrese keyword: ");
+                        keyword = sc.nextLine();
+                        keyword = keyword.toUpperCase();
+                
+                        sc.close();
+                
+                        EncriptarPlayFair(texto, keyword);
+
+                    }
+
+                    case 2 -> {
+                        System.out.print("Ingrese texto a desencriptar: ");
+                        Scanner sc = new Scanner(System.in);
+                        texto = sc.nextLine();
+                        texto = texto.toUpperCase();
+                
+                        System.out.print("Ingrese keyword: ");
+                        keyword = sc.nextLine();
+                        keyword = keyword.toUpperCase();
+                
+                        sc.close();
+                
+                        DesencriptarPlayFair(texto, keyword);
+                    }
+
+                    default -> {
+                        System.out.println("Opción Incorrecta.");
+                    }
+                }
+            }
             case 3 ->
                 SubMenu_Hill();
+
             default -> {
                 System.out.println("Opción Incorrecta.");
             }
@@ -108,8 +157,420 @@ public class Criptografia {
         return buffer.toString();
     }
 
-    public void encriptarPlayFair() {
+    static void EncriptarPlayFair(String texto, String llave) {
 
+        System.out.println("\nEncriptador:");
+        char[] arr_texto = texto.toCharArray();
+        char[] arr_llave = llave.toCharArray();
+        char[] abecedario = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 
+                            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+        char[][] tabla = new char[5][5];
+        char[] arr_encpt = new char[100];
+        int contador_arr_encpt = 0;
+        int contador = -1;
+
+        for (int i = 0; i < arr_llave.length; i++) {
+            for (int j = 0; j < 25; j++) {
+                if (arr_llave[i] == abecedario[j]) {
+                    contador++;
+                    int ronda = contador / 5;
+                    tabla[ronda][contador % 5] = abecedario[j];
+                    abecedario[j] = '0';
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < abecedario.length; i++) {
+            if (abecedario[i] != '0') {
+                contador++;
+                int ronda = contador / 5;
+                tabla[ronda][contador % 5] = abecedario[i];
+            }
+        }
+
+        char[] cualq = new char[100];
+        int c = 0;
+        
+        for (int i = 0; i < arr_texto.length; i++) {
+            if (i == 0 && arr_texto[i] != arr_texto[i + 1] && i + 1 < arr_texto.length) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i == 1 && arr_texto[i] != arr_texto[i + 1] && i + 1 < arr_texto.length) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i == arr_texto.length - 2 && i % 2 == 0 && arr_texto[i] != arr_texto[i - 1] && arr_texto[i] != arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i == arr_texto.length - 2 && i % 2 == 0 && arr_texto[i] != arr_texto[i - 1] && arr_texto[i] == arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i == arr_texto.length - 2 && i % 2 == 0 && arr_texto[i] == arr_texto[i - 1] && arr_texto[i] != arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i == arr_texto.length - 2 && i % 2 == 0 && arr_texto[i] == arr_texto[i - 1] && arr_texto[i] == arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i == arr_texto.length - 2 && i % 2 != 0 && arr_texto[i] != arr_texto[i - 1] && arr_texto[i] != arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i == arr_texto.length - 2 && i % 2 != 0 && arr_texto[i] != arr_texto[i - 1] && arr_texto[i] == arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i == arr_texto.length - 2 && i % 2 != 0 && arr_texto[i] == arr_texto[i - 1] && arr_texto[i] != arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i == arr_texto.length - 2 && i % 2 != 0 && arr_texto[i] == arr_texto[i - 1] && arr_texto[i] == arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i == arr_texto.length - 1 && i % 2 == 0 && arr_texto[i] != arr_texto[i - 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i == arr_texto.length - 1 && i % 2 == 0 && arr_texto[i] == arr_texto[i - 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i == arr_texto.length - 1 && i % 2 != 0 && arr_texto[i] != arr_texto[i - 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i == arr_texto.length - 1 && i % 2 != 0 && arr_texto[i] == arr_texto[i - 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i % 2 == 0 && arr_texto[i] != arr_texto[i - 1] && arr_texto[i] == arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i % 2 == 0 && arr_texto[i] != arr_texto[i - 1] && arr_texto[i] != arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i % 2 == 0 && arr_texto[i] == arr_texto[i - 1] && arr_texto[i] != arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i % 2 == 0 && arr_texto[i] == arr_texto[i - 1] && arr_texto[i] == arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i % 2 != 0 && arr_texto[i] != arr_texto[i - 1] && arr_texto[i] == arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+            if (i % 2 != 0 && arr_texto[i] != arr_texto[i - 1] && arr_texto[i] != arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i % 2 != 0 && arr_texto[i] == arr_texto[i - 1] && arr_texto[i] != arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                continue;
+            }
+
+            if (i % 2 != 0 && arr_texto[i] == arr_texto[i - 1] && arr_texto[i] == arr_texto[i + 1]) {
+                cualq[c++] = arr_texto[i];
+                cualq[c++] = 'X';
+                continue;
+            }
+
+        }
+
+        if (c % 2 != 0) {
+            cualq[c++] = 'X';
+        }
+
+        System.out.println("\nTexto a procesar: ");
+        for (int i = 0; i < c; i++) 
+            System.out.print(cualq[i]);
+        System.out.println();
+
+        for (int i = 0; i < c; i = i + 2) {
+            if (cualq[i] == 'J')
+                cualq[i] = 'I';
+            
+            if(cualq[i + 1] == 'J')
+                cualq[i + 1] = 'I';
+
+            int fila1 = 0, fila2 = 0, col1 = 0, col2 = 0;
+
+            for(int j = 0; j < 5; j++) {
+                for(int k = 0; k < 5; k++) {
+                    if (cualq[i] == tabla[j][k]) {
+                        fila1 = j;
+                        col1 = k;
+                        break;
+                    }
+                }
+            }
+
+            for (int j = 0; j < 5; j++) {
+                for (int k = 0; k < 5; k++) {
+                    if (cualq[i + 1] == tabla[j][k]) {
+                        fila2 = j;
+                        col2 = k;
+                        break;
+                    }
+                }
+            }
+
+            if (fila1 == fila2) {
+                col1 = (col1 + 1) % 5;
+                col2 = (col2 + 1) % 5;
+
+                arr_encpt[contador_arr_encpt++] = tabla[fila1][col1];
+                arr_encpt[contador_arr_encpt++] = tabla[fila2][col2];
+            }
+
+            else if (col1 == col2) {
+                fila1 = (fila1 + 1) % 5;
+                fila2 = (fila2 + 1) % 5;
+
+                arr_encpt[contador_arr_encpt++] = tabla[fila1][col1];
+                arr_encpt[contador_arr_encpt++] = tabla[fila2][col2];
+            }
+
+            else if (fila1 != fila2 && col1 != col2) {
+                int fila = 0, col = 0;
+                fila = fila1;
+                col = col2;
+
+                arr_encpt[contador_arr_encpt++] = tabla[fila][col];
+                fila = fila2;
+                col = col1;
+
+                arr_encpt[contador_arr_encpt++] = tabla[fila][col];
+            }
+
+            else {
+
+            }
+        }
+
+        System.out.println("\nTabla: ");
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++)
+                System.out.print(tabla[i][j] + " ");
+            System.out.print("\n");
+        }
+
+        System.out.print("\nTexto encriptado: ");
+        for (int i = 0; i < contador_arr_encpt; i++)
+            System.out.print(arr_encpt[i]);
+        System.out.println();
+    }
+
+    static void DesencriptarPlayFair(String texto, String llave) {
+        System.out.println("\nDesencriptador:");
+        char[] arr_encpt = texto.toCharArray();
+        char[] arr_llave = llave.toCharArray();
+        char[] abecedario = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 
+                            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+        char[][] tabla = new char[5][5];
+        int contador = -1;
+        
+        for (int i = 0; i < arr_llave.length; i++) {
+            for (int j = 0; j < 25; j++) {
+                if (arr_llave[i] == abecedario[j]) {
+                    contador++;
+                    int ronda = contador / 5;
+                    tabla[ronda][contador % 5] = abecedario[j];
+                    abecedario[j] = '0';
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < abecedario.length; i++) {
+            if (abecedario[i] != '0') {
+                contador++;
+                int ronda = contador / 5;
+                tabla[ronda][contador % 5] = abecedario[i];
+            }
+        }
+
+        System.out.println("\nTabla: ");
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++)
+                System.out.print(tabla[i][j] + " ");
+            System.out.print("\n");
+        }
+
+        char[] cualq = new char[arr_encpt.length];
+        int cont_cualq = 0;
+
+        for (int i = 0; i < arr_encpt.length; i = i + 2) {
+            int fila1 = 0, fila2 = 0, col1 = 0, col2 = 0;
+
+            for (int j = 0; j < 5; j++) {
+
+                for (int k = 0; k < 5; k++) {
+
+                    if (arr_encpt[i] == tabla[j][k]) {
+                        fila1 = j;
+                        col1 = k;
+                        break;
+                    }
+                }
+            }
+
+            for (int j = 0; j < 5; j++) {
+                
+                for (int k = 0; k < 5; k++) {
+
+                    if (arr_encpt[i + 1] == tabla[j][k]) {
+                        fila2 = j;
+                        col2 = k;
+                        break;
+                    }
+                }
+            }
+
+            if (fila1 == fila2) {
+                col1 = (col1 - 1 + 5) % 5;
+                col2 = (col2 - 1 + 5) % 5;
+
+                cualq[cont_cualq++] = tabla[fila1][col1];
+                cualq[cont_cualq++] = tabla[fila2][col2];
+            }
+
+            else if (col1 == col2) {
+                fila1 = (fila1 - 1 + 5) % 5;
+                fila2 = (fila2 - 1 + 5) % 5;
+
+                cualq[cont_cualq++] = tabla[fila1][col1];
+                cualq[cont_cualq++] = tabla[fila2][col2];
+            }
+
+            else if (fila1 != fila2 && col1 != col2) {
+                int fila = 0, col = 0;
+                fila = fila1;
+                col = col2;
+
+                cualq[cont_cualq++] = tabla[fila][col];
+                fila = fila2;
+                col = col1;
+                cualq[cont_cualq++] = tabla[fila][col];
+            }
+
+            else {
+
+            }
+        }
+
+        System.out.println("\nTexto a procesar: ");
+        for (int i = 0; i < cont_cualq; i++) 
+            System.out.print(cualq[i]);
+        System.out.println();
+
+        char[] arr_desencp = new char[100];
+        int contador_arr_desencp = 0;
+
+        for (int i = 0; i < cont_cualq; i++) {
+
+            if (i == 0) {
+                arr_desencp[contador_arr_desencp++] = cualq[i];
+                continue;
+            }
+
+            if (i == 1 && cualq[i - 1] == cualq[i + 1] && cualq[i] == 'X') {
+                continue;
+            }
+
+            if (i == 1 && cualq[i - 1] != cualq[i + 1] && cualq[i] != 'X') {
+                arr_desencp[contador_arr_desencp++] = cualq[i];
+                continue;
+            }
+
+            if (i == 2 && cualq[i - 1] == cualq[i + 1] && cualq[i] == 'X') {
+                continue;
+            }
+
+            if (i == 2 && cualq[i - 1] != cualq[i + 1] && cualq[i] != 'X') {
+                arr_desencp[contador_arr_desencp++] = cualq[i];
+                continue;
+            }
+
+            if (i != cont_cualq - 2 && i != cont_cualq - 1 && cualq[i - 1] == cualq[i + 1] && cualq[i] == 'X') {
+                continue;
+            }
+
+            if (i != cont_cualq - 2 && i != cont_cualq - 1 && cualq[i - 1] == cualq[i + 1] && cualq[i] != 'X') {
+                arr_desencp[contador_arr_desencp++] = cualq[i];
+                continue;
+            }
+
+            if (i == cont_cualq - 2 && cualq[i - 1] == cualq[i + 1] && cualq[i] == 'X') {
+                continue;
+            }
+
+            if (i == cont_cualq - 2 && cualq[i - 1] == cualq[i + 1] && cualq[i] != 'X') {
+                arr_desencp[contador_arr_desencp++] = cualq[i];
+                continue;
+            }
+
+            if (i == cont_cualq - 1 && i % 2 != 0 && cualq[i] == 'X') {
+                continue;
+            }
+
+            if (i == cont_cualq - 1 && cualq[i] != 'X') {
+                arr_desencp[contador_arr_desencp++] = cualq[i];
+                continue;
+            }
+
+            if (i == cont_cualq - 1 && i % 2 == 0 && cualq[i] == 'X') {
+                continue;
+            }
+
+            if(i >= 0) {
+                arr_desencp[contador_arr_desencp++] = cualq[i];
+                continue;
+            }
+        }
+
+        System.out.print("\n\nTexto desencriptado: ");
+        for (int i = 0; i < contador_arr_desencp; i++) {
+            System.out.print(arr_desencp[i]);
+        }
     }
 
     public void SubMenu_Hill() {
